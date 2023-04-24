@@ -1,0 +1,16 @@
+.chat-interface-header{
+    height: 70px;
+    display: flex;
+    padding: 10px;
+    background: white;
+    align-items: center;
+}
+
+.profile-pic{
+    border-radius: 50%;
+    margin-right: 50px;
+}
+
+.name{
+    font-size: 1.5rem;
+}

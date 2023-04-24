@@ -1,0 +1,17 @@
+.chats{
+    border-right: 1px solid grey;
+    min-width: 30%;
+    display: flex;
+    flex-direction: column;
+    max-height: 100vh;
+    padding: 0 5px;
+}
+
+.conversations-wrapper{
+    overflow-y: auto;
+}
+
+.conversations-wrapper::-webkit-scrollbar{
+    width: 0px;
+}
+

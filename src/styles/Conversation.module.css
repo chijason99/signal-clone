@@ -1,0 +1,41 @@
+.conversation-wrapper{
+    display: flex;
+    align-items: center;
+    padding: 10px 5px;
+    height: 100px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    border-radius: 15px;
+    background: white;
+}
+
+.conversation-wrapper:hover{
+    background: lightgrey;
+}
+
+.pic-wrapper{
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin-right: 10px;
+}
+
+.pic-wrapper img{
+    border-radius: 50%;
+}
+
+.details-wrapper{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    flex-grow: 1;
+}
+
+.details-wrapper h3{
+    font-size: 1.2rem;
+}
+
+.details-wrapper span{
+    color: grey;
+    margin-bottom: 5px;
+}

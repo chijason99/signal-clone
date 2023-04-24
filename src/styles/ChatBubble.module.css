@@ -1,0 +1,34 @@
+.chat-bubble-wrapper {
+  min-width: 100px;
+  max-width: 40%;
+  overflow-wrap: break-word;
+  color: white;
+  background: #3a76f0;
+  border-radius: 20px;
+  padding: 5px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  line-height: 1.58;
+}
+
+.message {
+  font-size: 1rem;
+  padding: 5px 0px;
+  margin-right: 10px;
+  padding-left: 10px;
+  letter-spacing: normal;
+}
+
+.time {
+  font-size: 0.7rem;
+  align-self:flex-end;
+}
+
+.left {
+  align-self: flex-start;
+}
+
+.right {
+  align-self: flex-end;
+}
