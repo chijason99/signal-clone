@@ -1,12 +1,7 @@
 import Image from "next/image"
 import styles from '../src/styles/Conversation.module.css'
-type ConversationProps = {
-    imageSrc:string,
-    name: string,
-    lastSentence: string
-}
-
-export default function Conversation({imageSrc, name, lastSentence}: ConversationProps) {
+import { ProfileData } from "../lib/chats"
+export default function Conversation({imageSrc, name, lastSentence}: ProfileData) {
   return (
     <article className={styles["conversation-wrapper"]}>
         <div className={styles["pic-wrapper"]}>

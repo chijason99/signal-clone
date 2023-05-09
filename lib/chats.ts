@@ -1,4 +1,11 @@
-export const DUMMY_DATA = [
+export type ProfileData = {
+  imageSrc:string,
+  name:string,
+  lastSentence: string
+}
+
+
+export const DUMMY_DATA:ProfileData[] = [
   {
     imageSrc: "/puppy.jpg",
     name: "Jason",
@@ -41,7 +48,19 @@ export const DUMMY_DATA = [
   },
 ];
 
-export const CHAT_DUMMY_DATA = {
+
+export type Message = {
+  msg: string,
+  time: string,
+  fromOthers: boolean,
+  senderId?: string
+}
+
+type ChatData = {
+  [name:string]:Array<Message>
+}
+
+export const CHAT_DUMMY_DATA:ChatData = {
   jason: [
     { msg: "testing", time: "10:22", fromOthers: false },
     { msg: "testing2", time: "11:21", fromOthers: true },
@@ -56,5 +75,7 @@ export const CHAT_DUMMY_DATA = {
     { msg: "testing3", time: "11:21", fromOthers: true },
     { msg: "testing3", time: "11:21", fromOthers: true },
 
+  ],
+  david: [
   ],
 };

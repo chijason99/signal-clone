@@ -7,12 +7,13 @@ export default function Chats() {
       <section className={styles.chats}>
         <Header />
         <div className={styles["conversations-wrapper"]}>
-        {DUMMY_DATA.map(({ imageSrc, name, lastSentence }) => {
+        {DUMMY_DATA.map(({ imageSrc, name, lastSentence },index) => {
           return (
             <Conversation
               imageSrc={imageSrc}
               name={name}
               lastSentence={lastSentence}
+              key={index}
             />
           );
         })}
