@@ -1,0 +1,26 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+.heading{
+    font-size: 3rem;
+    color: #3a76f0;
+}
+
+.heading:hover{
+    cursor: pointer;
+}
+
+.auth-container{
+    width: 20%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.auth-container button{
+    margin-right: 5px;
+}

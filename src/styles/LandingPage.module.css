@@ -1,0 +1,14 @@
+.landing-page{
+    background: url('../../public/landing-page-background.png') no-repeat;
+    background-size: cover;
+    height: 100vh;
+    color: #3a76f0;
+}
+
+.slogan{
+    text-align: center;
+    font-size: 2rem;
+    height: 400px;
+    line-height: 400px;
+    color: white;
+}

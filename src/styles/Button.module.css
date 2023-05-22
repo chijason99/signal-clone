@@ -5,3 +5,19 @@
     padding: 5px;
     cursor: pointer;
 }
+
+.auth, .submit, .sign-out{
+    background: #3a76f0;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 1.25rem;
+}
+
+.auth:hover{
+    background: #4f83ea;;
+}
+
+.submit{
+    font-size: 1rem;
+}

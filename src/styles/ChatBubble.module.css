@@ -27,6 +27,8 @@
 
 .left {
   align-self: flex-start;
+  background: lightgrey;
+  color: black;
 }
 
 .right {

@@ -3,9 +3,10 @@ import styles from "@/styles/Home.module.css";
 import Chats from "../../components/Chats";
 import Main from "../../components/Main";
 import { useState, useEffect } from "react";
+import { useAuthContext } from "@/context/Context";
 import io, { Socket } from "socket.io-client";
 import type { Message } from "../../lib/chats";
-
+import LandingPage from "./LandingPage";
 interface ServerToClientEvents {
   incomingMessage: (msg: Message) => void;
 }
@@ -18,7 +19,17 @@ let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 
 export default function Home() {
   const [message, setMessage] = useState<Array<Message>>([]);
-  const [chatTarget, setChatTarget] = useState("jason");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const {user} = useAuthContext();
+  console.log(`user : ${user?.uid}`)
+
+  useEffect(() => {
+    if(user){
+      setIsLoggedIn(true)
+    }else{
+      setIsLoggedIn(false)
+    }
+  },[user])
 
   useEffect((): any => {
     handleSocketInitialize();
@@ -55,13 +66,15 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className={styles.wrapper}>
+      
+      {isLoggedIn && <div className={styles.wrapper}>
         <Chats />
         <Main
-          /*name={chatTarget}*/ handleSendMessage={handleSendMessage}
+          handleSendMessage={handleSendMessage}
           messages={message}
         />
-      </div>
+      </div>}
+      {!isLoggedIn && <LandingPage/>}
     </>
   );
 }

@@ -35,7 +35,6 @@ export default function SocketHandler(
     socket.on("sendMessage", (msg) => {
       console.log('message incoming', msg)
       socket.broadcast.emit("incomingMessage", msg);
-      // socket.broadcast.emit(msg);
     });
   });
   io.on("error", (error) => {
