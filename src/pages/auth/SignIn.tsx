@@ -28,6 +28,7 @@ export default function SignInForm() {
       );
       if (error) {
         setErrorMsg("Invalid email or password. Please try again.");
+        passwordRef.current.value = "";
         console.error(error);
         return;
       }

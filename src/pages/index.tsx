@@ -4,6 +4,8 @@ import Chats from "../../components/Chats";
 import Main from "../../components/Main";
 import { useState, useEffect } from "react";
 import { useAuthContext } from "@/context/Context";
+import addMessage from "@/firebase/database/addMessage";
+import loadMessage from "@/firebase/database/loadMessage";
 import io, { Socket } from "socket.io-client";
 import type { Message } from "../../lib/chats";
 import LandingPage from "./LandingPage";
@@ -18,18 +20,17 @@ interface ClientToServerEvents {
 let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 
 export default function Home() {
+  
   const [message, setMessage] = useState<Array<Message>>([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const {user} = useAuthContext();
-  console.log(`user : ${user?.uid}`)
-
+  const { user } = useAuthContext();
   useEffect(() => {
-    if(user){
-      setIsLoggedIn(true)
-    }else{
-      setIsLoggedIn(false)
+    if (user) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
     }
-  },[user])
+  }, [user]);
 
   useEffect((): any => {
     handleSocketInitialize();
@@ -40,20 +41,34 @@ export default function Home() {
     };
   }, []);
 
+  useEffect(() => {
+    async function getPreviousMessages() {
+      const previousMessages = await loadMessage(
+        "8kt0g7rLl5RFocv1W1OtcLP1f7l2tsWWzWnODQannoidp4DRmDYgTes2"
+      );
+      setMessage((previousMessages));
+    }
+
+    getPreviousMessages();
+  }, []);
+
   async function handleSocketInitialize() {
     await fetch("/api/socket");
     socket = io({ path: "/api/socket" });
     socket.on("connect", () => {
-      socket.removeAllListeners()
+      socket.removeAllListeners();
       console.log(`connected! socketID:${socket.id}`);
     });
     socket.on("incomingMessage", (msg: Message) => {
-      msg.fromOthers = msg.senderId !== socket.id
       setMessage((previousMessages) => [...previousMessages, msg]);
     });
   }
   function handleSendMessage(msg: Message) {
-    socket.emit("sendMessage", {...msg, senderId:socket.id});
+    socket.emit("sendMessage", { ...msg, senderId: user!.uid });
+    addMessage("8kt0g7rLl5RFocv1W1OtcLP1f7l2tsWWzWnODQannoidp4DRmDYgTes2", {
+      ...msg,
+      senderId: user!.uid,
+    });
   }
   return (
     <>
@@ -66,15 +81,14 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      
-      {isLoggedIn && <div className={styles.wrapper}>
-        <Chats />
-        <Main
-          handleSendMessage={handleSendMessage}
-          messages={message}
-        />
-      </div>}
-      {!isLoggedIn && <LandingPage/>}
+
+      {isLoggedIn && (
+        <div className={styles.wrapper}>
+          <Chats />
+          <Main handleSendMessage={handleSendMessage} messages={message} />
+        </div>
+      )}
+      {!isLoggedIn && <LandingPage />}
     </>
   );
 }
