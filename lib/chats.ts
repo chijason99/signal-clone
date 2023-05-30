@@ -4,7 +4,11 @@ export type ProfileData = {
   lastSentence: string
 }
 
-
+export type Message = {
+  msg: string,
+  time: string,
+  senderId: string
+}
 export const DUMMY_DATA:ProfileData[] = [
   {
     imageSrc: "/puppy.jpg",
@@ -49,15 +53,10 @@ export const DUMMY_DATA:ProfileData[] = [
 ];
 
 
-export type Message = {
-  msg: string,
-  time: string,
-  senderId: string
+export  function generateConversationId(currentId:string, otherPersonId:string){
+  return [currentId, otherPersonId].sort().join('')
 }
 
-type ChatData = {
-  [name:string]:Array<Message>
-}
 
 // export const CHAT_DUMMY_DATA:ChatData = {
 //   jason: [

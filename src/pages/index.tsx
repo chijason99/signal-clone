@@ -3,12 +3,14 @@ import styles from "@/styles/Home.module.css";
 import Chats from "../../components/Chats";
 import Main from "../../components/Main";
 import { useState, useEffect } from "react";
-import { useAuthContext } from "@/context/Context";
+import { useAuthContext } from "@/context/AuthContext";
+import { useConversationContext } from "@/context/ConversationContext";
 import addMessage from "@/firebase/database/addMessage";
 import loadMessage from "@/firebase/database/loadMessage";
 import io, { Socket } from "socket.io-client";
 import type { Message } from "../../lib/chats";
 import LandingPage from "./LandingPage";
+
 interface ServerToClientEvents {
   incomingMessage: (msg: Message) => void;
 }
@@ -20,8 +22,8 @@ interface ClientToServerEvents {
 let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 
 export default function Home() {
-  
   const [message, setMessage] = useState<Array<Message>>([]);
+  const conversationContext = useConversationContext();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { user } = useAuthContext();
   useEffect(() => {
@@ -43,14 +45,15 @@ export default function Home() {
 
   useEffect(() => {
     async function getPreviousMessages() {
-      const previousMessages = await loadMessage(
-        "8kt0g7rLl5RFocv1W1OtcLP1f7l2tsWWzWnODQannoidp4DRmDYgTes2"
-      );
-      setMessage((previousMessages));
+      if (conversationContext.currentConversationId) {
+        const previousMessages = await loadMessage(
+          conversationContext.currentConversationId
+        );
+        setMessage(previousMessages);
+      }
     }
-
     getPreviousMessages();
-  }, []);
+  }, [conversationContext.currentConversationId]);
 
   async function handleSocketInitialize() {
     await fetch("/api/socket");
@@ -62,10 +65,13 @@ export default function Home() {
     socket.on("incomingMessage", (msg: Message) => {
       setMessage((previousMessages) => [...previousMessages, msg]);
     });
+    socket.onAny((event, ...args) => {
+      console.log(event, args);
+    });
   }
   function handleSendMessage(msg: Message) {
     socket.emit("sendMessage", { ...msg, senderId: user!.uid });
-    addMessage("8kt0g7rLl5RFocv1W1OtcLP1f7l2tsWWzWnODQannoidp4DRmDYgTes2", {
+    addMessage(conversationContext.currentConversationId, {
       ...msg,
       senderId: user!.uid,
     });

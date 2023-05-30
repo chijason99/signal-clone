@@ -7,7 +7,9 @@ export default async function signUpFunc(email: string, password: string) {
   try {
     result = await createUserWithEmailAndPassword(auth, email, password);
     await setDoc(doc(database, "users", result.user.uid), {
-      email:result.user.email
+      email:result.user.email,
+      username: result.user.email,
+      connections:[]
     })
   } catch (errorMessage) {
     error = errorMessage

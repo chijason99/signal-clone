@@ -6,10 +6,7 @@ import ChatBubble from "./ChatBubble";
 import SubmitButton from "./SubmitButton";
 import ChatInterfaceHeader from "./ChatInterfaceHeader";
 import type { Message } from "../lib/chats";
-import { useAuthContext } from "@/context/Context";
-interface ChatPersonProps {
-  [key: string]: string;
-}
+import { useAuthContext } from "@/context/AuthContext";
 
 interface MainProps {
   messages: Message[];
@@ -34,6 +31,7 @@ export default function Main({ messages, handleSendMessage }: MainProps) {
     handleSendMessage(msgData);
     inputRef.current.value = "";
   }
+
   return (
     <div className={styles.wrapper}>
       <ChatInterfaceHeader />
