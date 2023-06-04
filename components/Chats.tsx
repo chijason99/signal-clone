@@ -24,8 +24,6 @@ export default function Chats() {
       unsubscribe();
     };
   }, []);
-  console.log(connections);
-
   return (
     <section className={styles.chats}>
       <Header />
@@ -36,6 +34,7 @@ export default function Chats() {
               <Conversation
                 // imageSrc={imageSrc}
                 username={username}
+                userId = {userId}
                 // lastSentence={lastSentence}
                 key={index}
                 conversationId={generateConversationId(user.uid, userId)}

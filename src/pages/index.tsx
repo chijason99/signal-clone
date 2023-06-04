@@ -23,58 +23,63 @@ let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 
 export default function Home() {
   const [message, setMessage] = useState<Array<Message>>([]);
-  const conversationContext = useConversationContext();
+  const { currentConversationId, currentConversationReceiverId } = useConversationContext();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { user } = useAuthContext();
   useEffect(() => {
     if (user) {
       setIsLoggedIn(true);
+      handleSocketInitialize();
     } else {
       setIsLoggedIn(false);
     }
-  }, [user]);
-
-  useEffect((): any => {
-    handleSocketInitialize();
     return () => {
-      if (socket) {
+      if (socket && !isLoggedIn) {
         socket.disconnect();
       }
     };
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     async function getPreviousMessages() {
-      if (conversationContext.currentConversationId) {
-        const previousMessages = await loadMessage(
-          conversationContext.currentConversationId
-        );
+      if (currentConversationId) {
+        const previousMessages = await loadMessage(currentConversationId);
         setMessage(previousMessages);
       }
     }
     getPreviousMessages();
-  }, [conversationContext.currentConversationId]);
+  }, [currentConversationId]);
 
   async function handleSocketInitialize() {
     await fetch("/api/socket");
-    socket = io({ path: "/api/socket" });
-    socket.on("connect", () => {
-      socket.removeAllListeners();
-      console.log(`connected! socketID:${socket.id}`);
-    });
-    socket.on("incomingMessage", (msg: Message) => {
-      setMessage((previousMessages) => [...previousMessages, msg]);
-    });
-    socket.onAny((event, ...args) => {
-      console.log(event, args);
-    });
+    socket = io({ path: "/api/socket", autoConnect: false });
+    if (user) {
+      socket.auth = { userId: user.uid };
+      socket.connect();
+      socket.on("connect", () => {
+        // socket.removeAllListeners();
+        console.log(`connected! socketID:${socket.id}`);
+      });
+      socket.on("connect_error", (err) => {
+        console.log(err.message); // prints the message associated with the error
+      });
+      socket.on("incomingMessage", (msg: Message) => {
+        setMessage((previousMessages) => [...previousMessages, msg]);
+      });
+      socket.onAny((event, ...args) => {
+        console.log(event, args);
+      });
+    }
   }
   function handleSendMessage(msg: Message) {
-    socket.emit("sendMessage", { ...msg, senderId: user!.uid });
-    addMessage(conversationContext.currentConversationId, {
-      ...msg,
-      senderId: user!.uid,
-    });
+    if (currentConversationId && currentConversationReceiverId) {
+      socket.emit("sendMessage", { ...msg, senderId: user!.uid });
+      addMessage(currentConversationId, {
+        ...msg,
+        senderId: user!.uid,
+        receiverId: currentConversationReceiverId
+      });
+    }
   }
   return (
     <>
@@ -91,7 +96,9 @@ export default function Home() {
       {isLoggedIn && (
         <div className={styles.wrapper}>
           <Chats />
-          <Main handleSendMessage={handleSendMessage} messages={message} />
+          {currentConversationId && (
+            <Main handleSendMessage={handleSendMessage} messages={message} />
+          )}
         </div>
       )}
       {!isLoggedIn && <LandingPage />}

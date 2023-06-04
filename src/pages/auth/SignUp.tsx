@@ -5,7 +5,7 @@ import { useRef, useState } from "react";
 import { useRouter } from "next/router";
 import NavBar from "../../../components/NavBar";
 import styles from "../../styles/AuthForm.module.css";
-import btnStyles from "../../styles/Button.module.css"
+import btnStyles from "../../styles/Button.module.css";
 
 export default function SignInForm() {
   const [errorMsg, setErrorMsg] = useState<string>("");
@@ -46,6 +46,7 @@ export default function SignInForm() {
           name="email"
           id="email"
           ref={emailRef}
+          data-cy="sign-up-email"
           placeholder="Enter your email here"
         />
         <label htmlFor="password">Password: </label>
@@ -53,10 +54,16 @@ export default function SignInForm() {
           type="password"
           name="password"
           id="password"
+          data-cy="sign-up-pw"
           ref={passwordRef}
           placeholder="Enter your password here"
         />
-        <input type="submit" value="Sign Up" className={` ${btnStyles.btn} ${btnStyles.submit}`} />
+        <input
+          type="submit"
+          data-cy="sign-up-btn"
+          value="Sign Up"
+          className={` ${btnStyles.btn} ${btnStyles.submit}`}
+        />
       </form>
     </>
   );

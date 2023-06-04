@@ -5,7 +5,7 @@ import { useRef, useState } from "react";
 import { useRouter } from "next/router";
 import NavBar from "../../../components/NavBar";
 import styles from "../../styles/AuthForm.module.css";
-import btnStyles from "../../styles/Button.module.css"
+import btnStyles from "../../styles/Button.module.css";
 
 export default function SignInForm() {
   const [errorMsg, setErrorMsg] = useState<string>("");
@@ -42,16 +42,29 @@ export default function SignInForm() {
       {errorMsg && <div className={styles.error}>{errorMsg}</div>}
       <form onSubmit={(e) => handleSignIn(e)} className={styles["auth-form"]}>
         <label htmlFor="email">Email Address: </label>
-        <input type="email" name="email" id="email" ref={emailRef} placeholder="Enter your email here" />
+        <input
+          type="email"
+          name="email"
+          id="email"
+          data-cy="sign-in-email"
+          ref={emailRef}
+          placeholder="Enter your email here"
+        />
         <label htmlFor="password">Password:</label>
         <input
           type="password"
           name="password"
           id="password"
+          data-cy="sign-in-pw"
           ref={passwordRef}
           placeholder="Enter your password here"
         />
-        <input type="submit" value="Sign In" className={` ${btnStyles.btn} ${btnStyles.submit}`}/>
+        <input
+          type="submit"
+          value="Sign In"
+          data-cy="sign-in-btn"
+          className={` ${btnStyles.btn} ${btnStyles.submit}`}
+        />
       </form>
     </>
   );

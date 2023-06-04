@@ -8,6 +8,7 @@ export type Message = {
   msg: string,
   time: string,
   senderId: string
+  receiverId: string
 }
 export const DUMMY_DATA:ProfileData[] = [
   {

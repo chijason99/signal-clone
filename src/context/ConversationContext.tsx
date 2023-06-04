@@ -5,17 +5,21 @@ type ChildrenProps = {
   };
 
 type ConversationContextType = {
-    currentConversationId:string,
+    currentConversationId:string | undefined,
     setCurrentConversationId: Function,
-    currentConversationUsername:string,
-    setCurrentConversationUsername: Function
+    currentConversationReceiverName:string | undefined,
+    setCurrentConversationReceiverName: Function,
+    currentConversationReceiverId:string | undefined,
+    setCurrentConversationReceiverId: Function
 }
 
 export const ConversationContext = React.createContext<ConversationContextType>({
-    currentConversationId:"8kt0g7rLl5RFocv1W1OtcLP1f7l2rxhdfKUm6nhFMGF3u6qxGtq2DTb2",
+    currentConversationId:'',
     setCurrentConversationId(){},
-    currentConversationUsername:'',
-    setCurrentConversationUsername(){}
+    currentConversationReceiverName:'',
+    setCurrentConversationReceiverName(){},
+    currentConversationReceiverId:'',
+    setCurrentConversationReceiverId(){}
 })
 
 export function useConversationContext(){
@@ -24,13 +28,16 @@ export function useConversationContext(){
 
 export default function ConversationContextProvider({children}:ChildrenProps){
     const [currentConversationId, setCurrentConversationId ] = useState('')
-    const [currentConversationUsername, setCurrentConversationUsername ] = useState('')
+    const [currentConversationReceiverName, setCurrentConversationReceiverName ] = useState('')
+    const [currentConversationReceiverId, setCurrentConversationReceiverId ] = useState('')
 
     const contextValue = {
         currentConversationId,
         setCurrentConversationId,
-        currentConversationUsername,
-        setCurrentConversationUsername
+        currentConversationReceiverName,
+        setCurrentConversationReceiverName,
+        currentConversationReceiverId,
+        setCurrentConversationReceiverId
     }
     return(
         <ConversationContext.Provider value={contextValue} >
