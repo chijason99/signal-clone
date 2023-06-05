@@ -20,7 +20,7 @@ export default function Conversation({username, userId ,conversationId}:conversa
   return (
     <article className={styles["conversation-wrapper"]} onClick={handleReturnConversationId}>
         <div className={styles["pic-wrapper"]}>
-        <Image src="/puppy.jpg" alt="Profile pic" fill/>
+        <Image src="/puppy.jpg" height={80} width={80} alt="Profile pic"/>
         </div>
         <div className={styles["details-wrapper"]}>
             <h3>{username}</h3>

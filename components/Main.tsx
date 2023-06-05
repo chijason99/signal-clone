@@ -1,13 +1,12 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import styles from "../src/styles/Main.module.css";
 import ChatBubble from "./ChatBubble";
 import SubmitButton from "./SubmitButton";
 import ChatInterfaceHeader from "./ChatInterfaceHeader";
 import type { Message } from "../lib/chats";
 import { useAuthContext } from "@/context/AuthContext";
-
 interface MainProps {
   messages: Message[];
   handleSendMessage: (msg: Message) => void;
@@ -15,7 +14,14 @@ interface MainProps {
 
 export default function Main({ messages, handleSendMessage }: MainProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null) 
   const { user } = useAuthContext();
+  useEffect(() => {
+    if(messagesContainerRef.current){
+      const messagesContainer = messagesContainerRef.current;
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+  }, [messages]);
   function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
     if (!inputRef.current) return;
@@ -27,6 +33,7 @@ export default function Main({ messages, handleSendMessage }: MainProps) {
         (sentTime.getMinutes() < 10 ? "0" : "") + sentTime.getMinutes()
       }`,
       senderId: user!.uid,
+      receiverId:""
     };
     handleSendMessage(msgData);
     inputRef.current.value = "";
@@ -35,7 +42,7 @@ export default function Main({ messages, handleSendMessage }: MainProps) {
   return (
     <div className={styles.wrapper}>
       <ChatInterfaceHeader />
-      <div className={styles["fixed-height-container"]}>
+      <div className={styles["fixed-height-container"]}  ref={messagesContainerRef}>
         <main className={styles["chat-bubbles-wrapper"]}>
           {messages.map(({ msg, time, senderId }, index) => {
             return (

@@ -3,8 +3,9 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import type { Socket as NetSocket } from "net";
 import { Server as HTTPServer } from "http";
 
-interface CustomSocket extends Socket{
-  userId?:string
+interface CustomSocket extends Socket {
+  userId?: string;
+  userSocketId?: string;
 }
 
 interface SocketServer extends HTTPServer {
@@ -19,7 +20,9 @@ interface NextApiResponseWithSocket extends NextApiResponse {
   socket: SocketWithIO;
 }
 
-export default  function SocketHandler(
+const activeUsers: { [userId: string]: string } = {};
+
+export default function SocketHandler(
   _: NextApiRequest,
   res: NextApiResponseWithSocket
 ) {
@@ -33,21 +36,22 @@ export default  function SocketHandler(
     addTrailingSlash: false,
   });
   res.socket.server.io = io;
-  io.use((socket:CustomSocket, next) => {
-    const userId = socket.handshake.auth.userId;
+  io.use((socket: CustomSocket, next) => {
+    const { userId } = socket.handshake.auth;
     if (!userId) {
-      return next(new Error(`invalid userId: ${userId}`));
+      return next(new Error(`userId: ${userId}`));
     }
-    socket.userId = userId;
+    socket.userId = userId
     next();
   });
-  io.on("connection", (socket:CustomSocket) => {
+  io.on("connection", (socket: CustomSocket) => {
     console.log(`New user ${socket.id} connects to the socket`);
-    console.log(`userId: ${socket.userId}`)
+    console.log(`userId: ${socket.userId}`);
+    activeUsers[socket.userId!] = socket.id
     socket.on("sendMessage", (msg) => {
       console.log("message incoming", msg);
-      // socket.broadcast.emit("incomingMessage", msg);
-      socket.to(msg.receiverId).emit("incomingMessage", msg)
+      const receiverSocketId = activeUsers[msg.receiverId]
+      socket.to(receiverSocketId).emit("incomingMessage", msg);
     });
     socket.on("disconnect", () => {
       console.log(`user ${socket.id} disconnected.`);

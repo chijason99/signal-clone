@@ -9,6 +9,7 @@ export default async function signUpFunc(email: string, password: string) {
     await setDoc(doc(database, "users", result.user.uid), {
       email:result.user.email,
       username: result.user.email,
+      userId:result.user.uid,
       connections:[]
     })
   } catch (errorMessage) {

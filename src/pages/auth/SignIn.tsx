@@ -22,7 +22,7 @@ export default function SignInForm() {
         setErrorMsg("Invalid email or password. Please try again.");
         return;
       }
-      const { result, error } = await signInFunc(
+      const { error } = await signInFunc(
         emailRef.current.value,
         passwordRef.current.value
       );
@@ -32,7 +32,6 @@ export default function SignInForm() {
         console.error(error);
         return;
       }
-      console.log(result);
       router.push("/");
     }
   }

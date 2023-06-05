@@ -57,7 +57,6 @@ export default function Home() {
       socket.auth = { userId: user.uid };
       socket.connect();
       socket.on("connect", () => {
-        // socket.removeAllListeners();
         console.log(`connected! socketID:${socket.id}`);
       });
       socket.on("connect_error", (err) => {
@@ -65,20 +64,16 @@ export default function Home() {
       });
       socket.on("incomingMessage", (msg: Message) => {
         setMessage((previousMessages) => [...previousMessages, msg]);
-      });
-      socket.onAny((event, ...args) => {
-        console.log(event, args);
+        console.log(msg)
       });
     }
   }
   function handleSendMessage(msg: Message) {
     if (currentConversationId && currentConversationReceiverId) {
-      socket.emit("sendMessage", { ...msg, senderId: user!.uid });
-      addMessage(currentConversationId, {
-        ...msg,
-        senderId: user!.uid,
-        receiverId: currentConversationReceiverId
-      });
+      const newMessage = { ...msg, senderId: user!.uid, receiverId: currentConversationReceiverId }
+      socket.emit("sendMessage", newMessage);
+      addMessage(currentConversationId, newMessage);
+      setMessage((previousMessages) => [...previousMessages, newMessage]);
     }
   }
   return (
