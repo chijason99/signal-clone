@@ -8,8 +8,8 @@ export default function Header() {
       <a href="https://signal.org" target="_blank">
         <Image alt="signal-pic" width={50} height={50} src="/signal-icon.png" />
       </a>
-      <h1 style={{"color":"#3a76f0"}}>SignalClone</h1>
-      <button className={`${btnStyles.btn} ${btnStyles["sign-out"]}`} onClick={() => signOutFunc()}>Sign Out</button>
+      <h1 style={{"color":"#3a76f0"}} data-cy="h1">SignalClone</h1>
+      <button className={`${btnStyles.btn} ${btnStyles["sign-out"]}`} data-cy="sign-out-btn" onClick={() => signOutFunc()}>Sign Out</button>
     </header>
   );
 }

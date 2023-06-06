@@ -38,7 +38,7 @@ export default function SignInForm() {
   return (
     <>
       <NavBar />
-      {errorMsg && <div className={styles.error}>{errorMsg}</div>}
+      {errorMsg && <div className={styles.error} data-cy="error-msg">{errorMsg}</div>}
       <form onSubmit={(e) => handleSignIn(e)} className={styles["auth-form"]}>
         <label htmlFor="email">Email Address: </label>
         <input

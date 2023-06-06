@@ -24,9 +24,6 @@ export default function Conversation({username, userId ,conversationId}:conversa
         </div>
         <div className={styles["details-wrapper"]}>
             <h3>{username}</h3>
-            {/* <span>
-                {lastSentence}
-            </span> */}
         </div>
     </article>
   )

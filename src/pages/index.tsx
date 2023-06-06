@@ -38,7 +38,7 @@ export default function Home() {
         socket.disconnect();
       }
     };
-  }, [user]);
+  }, [user, isLoggedIn, handleSocketInitialize]);
 
   useEffect(() => {
     async function getPreviousMessages() {

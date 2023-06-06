@@ -1,23 +1,24 @@
 describe('Can sign in with valid credentials', () => {
-  const testAccount1Email = process.env.TEST_ACCOUNT_1_EMAIL
-  const testAccount1Pw = process.env.TEST_ACCOUNT_1_PW
-  const testAccount2Email = process.env.TEST_ACCOUNT_2_EMAIL
-  const testAccount2Pw = process.env.TEST_ACCOUNT_2_PW
-
   it('sign in to the chat app with michael', () => {
-    cy.visit('http://localhost:3000')
-    cy.contains("Sign In").click()
-    cy.url().should('include',"auth/SignIn")
-    cy.get('[data-cy="sign-in-email"]').type(`${testAccount1Email}`)
-    cy.get('[data-cy="sign-in-pw"]').type(`${testAccount1Pw}`)
-    cy.get('[data-cy="sign-in-btn"]').click()
+    cy.signIn(Cypress.env('testEmailMichael'),Cypress.env('testPasswordMichael'))
+    cy.getDataCy('h1').should('contain','SignalClone')
+    cy.getDataCy('sign-out-btn').should('contain','Sign Out')
   })
   it('sign in to the chat app with david', () => {
-    cy.visit('http://localhost:3000')
-    cy.contains("Sign In").click()
-    cy.url().should('include',"auth/SignIn")
-    cy.get('[data-cy="sign-in-email"]').type(`${testAccount2Email}`)
-    cy.get('[data-cy="sign-in-pw"]').type(`${testAccount2Pw}`)
-    cy.get('[data-cy="sign-in-btn"]').click()
+    cy.signIn(Cypress.env('testEmailDavid'),Cypress.env('testPasswordDavid'))
+    cy.getDataCy('h1').should('contain','SignalClone')
+    cy.getDataCy('sign-out-btn').should('contain','Sign Out')
+  })
+
+})
+
+describe('Cannot sign in with invalid credentials',() => {
+  it('cannot sign in with wrong credentials',() => {
+    cy.signIn('fakeEmail@email.com','FakePassword')
+    cy.getDataCy('error-msg').should('contain','Invalid email or password. Please try again.')
+  })
+  it('Cannot sign in with wrong password',() => {
+    cy.signIn(Cypress.env('testEmailDavid'),'FakePassword')
+    cy.getDataCy('error-msg').should('contain','Invalid email or password. Please try again.')
   })
 })

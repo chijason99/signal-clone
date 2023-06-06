@@ -32,10 +32,8 @@ export default function Chats() {
           {connections.map(({ username, userId }, index) => {
             return (
               <Conversation
-                // imageSrc={imageSrc}
                 username={username}
                 userId = {userId}
-                // lastSentence={lastSentence}
                 key={index}
                 conversationId={generateConversationId(user.uid, userId)}
               />

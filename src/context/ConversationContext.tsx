@@ -4,7 +4,7 @@ type ChildrenProps = {
     children: React.ReactNode;
   };
 
-type ConversationContextType = {
+export type ConversationContextType = {
     currentConversationId:string | undefined,
     setCurrentConversationId: Function,
     currentConversationReceiverName:string | undefined,

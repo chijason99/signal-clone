@@ -1,13 +1,23 @@
 import { defineConfig } from "cypress";
-import admin from 'firebase-admin';
-import { plugin as cypressFirebasePlugin } from 'cypress-firebase';
 
 export default defineConfig({
   e2e: {
-    baseUrl: 'http://localhost:3000',
+    baseUrl: "http://localhost:3000",
     setupNodeEvents(on, config) {
       // implement node event listeners here
-      return cypressFirebasePlugin(on, config, admin);
+    },
+    env: {
+      testEmailMichael: "test123@test.com",
+      testPasswordMichael: "abc123abc123",
+      testEmailDavid: "test234@test.com",
+      testPasswordDavid: "test234",
+    },
+  },
+
+  component: {
+    devServer: {
+      framework: "next",
+      bundler: "webpack",
     },
   },
 });
