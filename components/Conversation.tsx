@@ -18,7 +18,7 @@ export default function Conversation({username, userId ,conversationId}:conversa
     setCurrentConversationReceiverId(userId)
   }
   return (
-    <article className={styles["conversation-wrapper"]} onClick={handleReturnConversationId}>
+    <article className={styles["conversation-wrapper"]} onClick={handleReturnConversationId} data-cy={username}>
         <div className={styles["pic-wrapper"]}>
         <Image src="/puppy.jpg" height={80} width={80} alt="Profile pic"/>
         </div>

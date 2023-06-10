@@ -1,7 +1,7 @@
 import React from "react";
 import ChatBubble from "./ChatBubble";
 
-describe("render the bubble correctly", () => {
+describe("<ChatBubble />", () => {
   it("renders the incoming message correctly, ", () => {
     // see: https://on.cypress.io/mounting-react
     cy.mount(
@@ -33,47 +33,15 @@ describe("render the bubble correctly", () => {
     cy.getDataCy("msg").should("have.text", "Outgoing message");
     cy.getDataCy("time").should("have.text", "22:15");
   });
-  // it("renders the bubbles in correct order", () => {
-  //   cy.mount(
-  //     <>
-  //       <ChatBubble
-  //         msg={"Outgoing message"}
-  //         time={"22:15"}
-  //         fromOthers={false}
-  //         dataCyValue="topMsg"
-  //       />
-  //       <ChatBubble
-  //         msg={"Incoming message"}
-  //         time={"22:16"}
-  //         fromOthers={true}
-  //         dataCyValue="bottomMsg"
-  //       />
-  //     </>
-  //   );
-  //   cy.getDataCy("topMsg")
-  //     .invoke("css", "order")
-  //     .then((topMsgOrder) => {
-  //       cy.getDataCy("bottomMsg")
-  //         .invoke("css", "order")
-  //         .then((bottomMsgOrder) => {
-  //           expect(parseInt(topMsgOrder.toString())).to.lessThan(
-  //             parseInt(bottomMsgOrder.toString())
-  //           );
-  //         });
-  //     });
-  // });
-});
-
-describe("renders the time correctly with 4 digits", () => {
-  it("hour starts with 0", () => {
+  it("renders time correctly when the hour starts with 0", () => {
     cy.mount(<ChatBubble msg={"Testing"} time={"02:15"} fromOthers={true} />);
     cy.getDataCy("time").should("have.text", "02:15");
   });
-  it("minute starts with 0", () => {
+  it("renders time correctly when the minute starts with 0", () => {
     cy.mount(<ChatBubble msg={"Testing"} time={"12:05"} fromOthers={true} />);
     cy.getDataCy("time").should("have.text", "12:05");
   });
-  it("at midnight", () => {
+  it("renders time correctly when it is at midnight", () => {
     cy.mount(<ChatBubble msg={"Testing"} time={"00:00"} fromOthers={true} />);
     cy.getDataCy("time").should("have.text", "00:00");
   });

@@ -14,6 +14,7 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
+import ConversationContextProvider from '@/context/ConversationContext'
 import './commands'
 
 // Alternatively you can use CommonJS syntax:

@@ -66,6 +66,7 @@ export default function Main({ messages, handleSendMessage }: MainProps) {
           type="text"
           placeholder="Write your message here"
           ref={inputRef}
+          data-cy="msg-input"
         />
         <SubmitButton />
       </form>

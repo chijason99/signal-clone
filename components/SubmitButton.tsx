@@ -2,7 +2,7 @@ import styles from '../src/styles/Button.module.css'
 
 export default function SubmitButton() {
   return (
-    <button type="submit" className={styles.btn}>
+    <button type="submit" className={styles.btn} data-cy="send-msg-btn">
       <svg
         version="1.0"
         xmlns="http://www.w3.org/2000/svg"

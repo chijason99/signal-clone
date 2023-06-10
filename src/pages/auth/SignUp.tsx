@@ -11,10 +11,11 @@ export default function SignInForm() {
   const [errorMsg, setErrorMsg] = useState<string>("");
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const usernameRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   async function handleSignUp(e: React.SyntheticEvent) {
     e.preventDefault();
-    if (emailRef.current && passwordRef.current) {
+    if (emailRef.current && passwordRef.current && usernameRef.current) {
       if (
         emailRef.current.value.trim() == null ||
         passwordRef.current.value.trim() == null
@@ -22,9 +23,14 @@ export default function SignInForm() {
         setErrorMsg("Invalid email or password. Please try again.");
         return;
       }
+      if(usernameRef.current.value.trim() == null || usernameRef.current.value.trim().length < 2 ){
+        setErrorMsg("The username must be at least two characters long.")
+        return
+      }
       const { result, error } = await signUpFunc(
         emailRef.current.value,
-        passwordRef.current.value
+        passwordRef.current.value,
+        usernameRef.current.value
       );
       if (error) {
         setErrorMsg("Invalid email or password. Please try again.");
@@ -57,6 +63,15 @@ export default function SignInForm() {
           data-cy="sign-up-pw"
           ref={passwordRef}
           placeholder="Enter your password here"
+        />
+        <label htmlFor="username">Username: </label>
+        <input
+          type="text"
+          name="username"
+          id="username"
+          data-cy="sign-up-username"
+          ref={usernameRef}
+          placeholder="This will be you username. It needs to be at least 2 characters long."
         />
         <input
           type="submit"

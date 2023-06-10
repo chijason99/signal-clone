@@ -6,7 +6,7 @@
     justify-content: center;
 }
 
-.auth-form input[type="email"], .auth-form input[type="password"]{
+.auth-form input[type="email"], .auth-form input[type="password"], .auth-form input[type="text"]{
     border-radius: 5px;
     outline: none;
     padding: 10px 5px;

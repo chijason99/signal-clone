@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import getConnections from "@/firebase/database/getConnections";
 import { useAuthContext } from "@/context/AuthContext";
 import { generateConversationId } from "../lib/chats";
+import NewConversationButton from "./NewConversationButton";
 
 export default function Chats() {
   const [connections, setConnections] = useState<userType[]>([]);
@@ -28,7 +29,7 @@ export default function Chats() {
     <section className={styles.chats}>
       <Header />
       {user && (
-        <div className={styles["conversations-wrapper"]}>
+        <div className={styles["conversations-wrapper"]} id="conversations-wrapper">
           {connections.map(({ username, userId }, index) => {
             return (
               <Conversation
@@ -41,6 +42,7 @@ export default function Chats() {
           })}
         </div>
       )}
+      <NewConversationButton />
     </section>
   );
 }

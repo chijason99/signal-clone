@@ -97,6 +97,7 @@ export default function Home() {
         </div>
       )}
       {!isLoggedIn && <LandingPage />}
+      <div id="portal"></div>
     </>
   );
 }
