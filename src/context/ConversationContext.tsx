@@ -1,8 +1,6 @@
 import React from 'react'
 import { useState, useContext } from 'react';
-type ChildrenProps = {
-    children: React.ReactNode;
-  };
+import { ChildrenProps } from './AuthContext';
 
 export type ConversationContextType = {
     currentConversationId:string | undefined,

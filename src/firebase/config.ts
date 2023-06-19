@@ -14,3 +14,18 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 export const database = getFirestore(app);
 export const auth = getAuth(app);
+
+export function mapFirebaseErrorCode(errorCode:string){
+  switch(errorCode){
+    case "auth/invalid-password":
+      return "Password provided is not corrected";
+    case "auth/invalid-email":
+      return "Email provided is invalid";
+    case "auth/email-already-in-use":
+      return "This new email address is already registered.";
+      case "auth/wrong-password":
+        return "Invalid credentials."
+    default:
+      return "An unexpected error occurred."
+  }
+}

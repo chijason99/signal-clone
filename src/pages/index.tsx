@@ -10,7 +10,6 @@ import loadMessage from "@/firebase/database/loadMessage";
 import io, { Socket } from "socket.io-client";
 import type { Message } from "../../lib/chats";
 import LandingPage from "./LandingPage";
-
 interface ServerToClientEvents {
   incomingMessage: (msg: Message) => void;
 }
@@ -78,7 +77,7 @@ export default function Home() {
   }
   return (
     <>
-      <Head>
+          <Head>
         <title>Real time chat app</title>
         <meta
           name="description"
@@ -97,7 +96,6 @@ export default function Home() {
         </div>
       )}
       {!isLoggedIn && <LandingPage />}
-      <div id="portal"></div>
-    </>
+    </> 
   );
 }

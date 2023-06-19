@@ -38,7 +38,11 @@ export default function SignInForm() {
   return (
     <>
       <NavBar />
-      {errorMsg && <div className={styles.error} data-cy="error-msg">{errorMsg}</div>}
+      {errorMsg && (
+        <div className={styles.error} data-cy="error-msg">
+          {errorMsg}
+        </div>
+      )}
       <form onSubmit={(e) => handleSignIn(e)} className={styles["auth-form"]}>
         <label htmlFor="email">Email Address: </label>
         <input
@@ -58,12 +62,13 @@ export default function SignInForm() {
           ref={passwordRef}
           placeholder="Enter your password here"
         />
-        <input
+        <button
           type="submit"
-          value="Sign In"
           data-cy="sign-in-btn"
           className={` ${btnStyles.btn} ${btnStyles.submit}`}
-        />
+        >
+          Sign In
+        </button>
       </form>
     </>
   );

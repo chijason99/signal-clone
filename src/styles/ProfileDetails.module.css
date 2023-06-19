@@ -1,0 +1,17 @@
+.profile-detail-text{
+    padding: 20px 10px;
+    margin-bottom: 10px;
+    font-size: 1.25rem;
+    border-radius: 5px;
+    display: block;
+    width: 100%;
+}
+
+.profile-detail-text:hover{
+    background: lightgrey;
+    cursor: pointer;
+}
+/* .profile-detail-wrapper{
+    display: flex;
+    align-items: center;
+} */

@@ -2,11 +2,13 @@ import styles from "../src/styles/HamburgerMenu.module.css";
 import btnStyles from "../src/styles/Button.module.css";
 import signOutFunc from "@/firebase/auth/signOutFunc";
 import { useState, useEffect, useRef } from "react";
+import { useSettingsContext } from "@/context/SettingsContext";
 
 export default function HamburgerMenu() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const optionsContainerRef = useRef<HTMLDivElement>(null);
   const hamburgerMenuRef = useRef<HTMLButtonElement>(null);
+  const {setIsSettingsOpen} = useSettingsContext();
   useEffect(() => {
     document.addEventListener("click", handelCloseHamburgerMenu);
     return () => {
@@ -25,7 +27,7 @@ export default function HamburgerMenu() {
   return (
     <div className={`${styles["hamburger-menu-container"]}`}>
       <button
-        className={`${styles["hamburger-menu"]} ${btnStyles["btn"]}`}
+        className={`${styles["hamburger-menu"]} ${btnStyles["btn"]} ${isModalOpen ? styles.active: null}`}
         aria-label="hamburger-menu"
         onClick={(e) => handleClickHamburgerMenu(e)}
         ref={hamburgerMenuRef}
@@ -39,10 +41,10 @@ export default function HamburgerMenu() {
         <div ref={optionsContainerRef}>
           <ul className={styles["options-container"]}>
             <li className={styles["option"]}>
-              <button className={`${btnStyles["option-btn"]} ${btnStyles["btn"]}`} >Profile</button>
+              <button className={`${btnStyles["option-btn"]} ${btnStyles["btn"]}`} onClick={() => setIsSettingsOpen(true)}>Settings</button>
             </li>
             <li className={styles["option"]}>
-              <button className={`${btnStyles["option-btn"]} ${btnStyles["btn"]}`} onClick={signOutFunc}>Sign out</button>
+              <button className={`${btnStyles["option-btn"]} ${btnStyles["btn"]}`} onClick={() => signOutFunc()}>Sign out</button>
             </li>
           </ul>
         </div>

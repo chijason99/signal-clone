@@ -7,16 +7,36 @@
     display: inline-block;
 }
 
-.auth, .submit, .new-conversation{
-    background: #3a76f0;
+.auth, .submit, .new-conversation, .cancel{
+    background: hsl(220,86%,58%);
     color: white;
     padding: 10px;
     border-radius: 5px;
     font-size: 1.25rem;
 }
 
+.auth, .submit{
+    box-shadow: 0px 5px 2px hsl(220,86%,40%);
+    transition: all .3s ease;
+}
+
 .auth:hover, .new-conversation:hover{
-    background: #4f83ea;;
+    background: hsl(220,79%,61%);
+}
+
+.auth:active, .submit:active, .cancel:active{
+    transform: translateY(6px);
+    box-shadow: none;
+}
+
+.cancel{
+    background: hsl(2,57%,58%);
+    transition: all .3s ease;
+    box-shadow: 0px 5px 2px hsl(2,64%,40%);
+}
+
+.cancel:hover{
+    background: hsl(2,64%,58%) ;
 }
 
 .new-conversation{
@@ -31,7 +51,7 @@
     line-height: 1.75rem;
 }
 
-.submit{
+.submit, .cancel{
     font-size: 1rem;
 }
 
@@ -47,3 +67,4 @@
 .option-btn:hover{
     background: lightgrey;
 }
+

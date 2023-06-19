@@ -12,7 +12,7 @@ export const AuthContext = createContext<AuthContextType>({ user: null });
 export function useAuthContext(){
     return useContext(AuthContext)
 }
-type ChildrenProps = {
+export type ChildrenProps = {
   children: React.ReactNode;
 };
 
