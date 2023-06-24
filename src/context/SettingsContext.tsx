@@ -5,16 +5,16 @@ import { ChildrenProps } from "./AuthContext";
 type SettingsContextType = {
     isSettingsOpen:boolean,
     setIsSettingsOpen: Function,
-    isUpdateModalOpen:boolean,
-    setIsUpdateModalOpen: Function,
+    isUpdateFormOpen:boolean,
+    setIsUpdateFormOpen: Function,
 
 }
 
 export const SettingsContext =React.createContext<SettingsContextType>({
     isSettingsOpen:false,
     setIsSettingsOpen(){},
-    isUpdateModalOpen:false,
-    setIsUpdateModalOpen(){}
+    isUpdateFormOpen:false,
+    setIsUpdateFormOpen(){}
 })
 
 export function useSettingsContext(){
@@ -23,12 +23,12 @@ export function useSettingsContext(){
 
 export default function SettingsContextProvider({children}:ChildrenProps){
     const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
-    const [isUpdateModalOpen, setIsUpdateModalOpen] = useState<boolean>(false);
+    const [isUpdateFormOpen, setIsUpdateFormOpen] = useState<boolean>(false);
     const contextValue = {
         isSettingsOpen,
         setIsSettingsOpen,
-        isUpdateModalOpen,
-        setIsUpdateModalOpen
+        isUpdateFormOpen,
+        setIsUpdateFormOpen
     }
     return (
         <SettingsContext.Provider value={contextValue}>

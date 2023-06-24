@@ -6,7 +6,8 @@ export type userType = {
   email: string;
   connections: string[];
   username: string;
-  userId: string
+  userId: string;
+  phoneNumber:string;
 };
 
 export default async function getConnections(

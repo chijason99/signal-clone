@@ -54,8 +54,8 @@ export const DUMMY_DATA:ProfileData[] = [
 ];
 
 
-export  function generateConversationId(currentId:string, otherPersonId:string){
-  return [currentId, otherPersonId].sort().join('')
+export  function generateConversationId(currentUserId:string, targetUserId:string){
+  return [currentUserId, targetUserId].sort().join('')
 }
 
 

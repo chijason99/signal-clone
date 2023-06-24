@@ -1,14 +1,16 @@
 import { database } from "@/firebase/config";
 import { getDoc, doc, DocumentReference } from "firebase/firestore";
 
-interface UserProfileType{
+export interface UserProfileType{
     username:string,
     email: string,
-    userId?:string,
-    connections?:Array<DocumentReference>
+    userId:string,
+    connections:Array<DocumentReference>,
+    phoneNumber:string
 }
 
-export default async function getUserProfile(userId: string):Promise<UserProfileType> {
+
+export default async function getUserProfile(userId: string) {
     try{
         const userRef = doc(database, 'users', userId)
         const userSnapshot = await getDoc(userRef);

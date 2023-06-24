@@ -1,8 +1,13 @@
 import React from 'react'
 import btnStyles from '../src/styles/Button.module.css'
-export default function NewConversationButton() {
+
+interface NewConversationButtonProps{
+  handleOpenNewConversationModal:Function,
+}
+
+export default function NewConversationButton({handleOpenNewConversationModal}:NewConversationButtonProps) {
   return (
-    <button className={`${btnStyles.btn} ${btnStyles['new-conversation']}`}>
+    <button className={`${btnStyles.btn} ${btnStyles['new-conversation']}`} onClick={() => handleOpenNewConversationModal()}>
         &#x2b;
     </button>
   )

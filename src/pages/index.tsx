@@ -51,7 +51,7 @@ export default function Home() {
 
   async function handleSocketInitialize() {
     await fetch("/api/socket");
-    socket = io({ path: "/api/socket", autoConnect: false });
+    socket = io({ path: "/api/socket", autoConnect: false});
     if (user) {
       socket.auth = { userId: user.uid };
       socket.connect();
@@ -62,8 +62,11 @@ export default function Home() {
         console.log(err.message); // prints the message associated with the error
       });
       socket.on("incomingMessage", (msg: Message) => {
-        setMessage((previousMessages) => [...previousMessages, msg]);
-        console.log(msg)
+        console.log( `currentConversationReceiverId : ${currentConversationReceiverId}, msg.senderId:${msg.senderId}`)
+        if(currentConversationReceiverId === msg.senderId){
+          setMessage((previousMessages) => [...previousMessages, msg]);
+          console.log(msg)
+        }
       });
     }
   }

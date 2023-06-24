@@ -4,8 +4,8 @@ import styles from "../src/styles/Settings.module.css";
 import ProfileDetails from "./ProfileDetails";
 import getUserProfile from "@/firebase/database/getUserProfile";
 import { useAuthContext } from "@/context/AuthContext";
-import { useSettingsContext } from "@/context/SettingsContext";
-import UpdateModal from "./UpdateModal";
+import LeftSideModal from "./LeftSideModal";
+import UpdateForm from "./UpdateForm";
 
 export default function Settings() {
   const { user } = useAuthContext();
@@ -27,18 +27,18 @@ export default function Settings() {
     }
   }, [user, refreshKey]);
   function handleClickUsername() {
-    handleCloseUpdateModal();
+    handleCloseUpdateForm();
     setIsUpdateUsername(true);
   }
   function handleClickEmail() {
-    handleCloseUpdateModal();
+    handleCloseUpdateForm();
     setIsUpdateEmail(true);
   }
   function handleClickPassword() {
-    handleCloseUpdateModal();
+    handleCloseUpdateForm();
     setIsUpdatePassword(true);
   }
-  function handleCloseUpdateModal() {
+  function handleCloseUpdateForm() {
     setIsUpdateUsername(false);
     setIsUpdateEmail(false);
     setIsUpdatePassword(false);
@@ -73,25 +73,31 @@ export default function Settings() {
         />
       </div>
       {isUpdateUsername && (
-        <UpdateModal
-          handleRerender={handleRerender}
-          closeModalFunction={handleCloseUpdateModal}
-          field={"username"}
-        />
+        <LeftSideModal>
+          <UpdateForm
+            handleRerender={handleRerender}
+            closeModalFunction={handleCloseUpdateForm}
+            field={"username"}
+          />
+        </LeftSideModal>
       )}
       {isUpdateEmail && (
-        <UpdateModal
-          handleRerender={handleRerender}
-          closeModalFunction={handleCloseUpdateModal}
-          field={"email"}
-        />
+        <LeftSideModal>
+          <UpdateForm
+            handleRerender={handleRerender}
+            closeModalFunction={handleCloseUpdateForm}
+            field={"email"}
+          />
+        </LeftSideModal>
       )}
       {isUpdatePassword && (
-        <UpdateModal
-          handleRerender={handleRerender}
-          closeModalFunction={handleCloseUpdateModal}
-          field={"password"}
-        />
+        <LeftSideModal>
+          <UpdateForm
+            handleRerender={handleRerender}
+            closeModalFunction={handleCloseUpdateForm}
+            field={"password"}
+          />
+        </LeftSideModal>
       )}
     </div>
   );
