@@ -1,13 +1,21 @@
-import React from "react";
+// css
 import styles from "../src/styles/UpdateForm.module.css";
 import btnStyles from "../src/styles/Button.module.css";
+
+// hooks
 import { useRef, useState } from "react";
+import { useAuthContext } from "@/context/AuthContext";
+
+// firebase functions
 import updateUsername from "@/firebase/database/updateUsername";
 import updateEmail from "@/firebase/database/updateEmail";
-import { useAuthContext } from "@/context/AuthContext";
 import reauthenticateUser from "@/firebase/auth/reauthenticateUser";
 import updatePassword from "@/firebase/database/updatePassword";
+
+// utils
 import { mapFirebaseErrorCode } from "@/firebase/config";
+
+// components
 import UpdateUsernameForm from "./UpdateUsernameForm";
 import UpdatePasswordForm from "./UpdatePasswordForm";
 import UpdateEmailForm from "./UpdateEmailForm";

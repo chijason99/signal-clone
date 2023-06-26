@@ -2,6 +2,7 @@
 import React, { FormEvent, useRef, useState } from "react";
 import { useAuthContext } from "@/context/AuthContext";
 import { useConversationContext } from "@/context/ConversationContext";
+
 //css
 import styles from "../src/styles/NewConversationForm.module.css";
 import btnStyles from "../src/styles/Button.module.css";
@@ -13,76 +14,106 @@ import { generateConversationId } from "../lib/chats";
 import addNewConnection from "@/firebase/database/addNewConnection";
 import addNewConversation from "@/firebase/database/addNewConversation";
 
+// utils
+import { checkPhoneNumberLength } from "../lib/chats";
+
+// components
+import PhoneNumberInput from "./PhoneNumberInput";
+
 interface NewConversationFormProps {
   handleCloseNewConversationModal: Function;
-  connections:Array<userType>
+  connections: Array<userType>;
+  setConnections: Function;
 }
 
 export default function NewConversationForm({
   handleCloseNewConversationModal,
-  connections
+  connections,
+  setConnections,
 }: NewConversationFormProps) {
-  const phoneNumberRef = useRef<HTMLInputElement>(null);
-  const [errorMsg, setErrorMsg] = useState<string>('')
-  const {user} = useAuthContext();
-  const {setCurrentConversationId, setCurrentConversationReceiverName, setCurrentConversationReceiverId} = useConversationContext()
+  const phoneNumberRef1 = useRef<HTMLInputElement>(null);
+  const phoneNumberRef2 = useRef<HTMLInputElement>(null);
+  const [errorMsg, setErrorMsg] = useState<string>("");
+  const { user } = useAuthContext();
+  const {
+    setCurrentConversationId,
+    setCurrentConversationReceiverName,
+    setCurrentConversationReceiverId,
+  } = useConversationContext();
 
-  function handleStartNewConversation({userId, username}:userType) {
-    setCurrentConversationReceiverName(username)
-    setCurrentConversationReceiverId(userId)
-    const conversationId = generateConversationId(user!.uid, userId )
-    setCurrentConversationId(conversationId)
-    if(!checkTargetExistInConnections(userId)){
-        addNewConnection(user!.uid, userId)
-        addNewConversation(conversationId)
+  function handleStartNewConversation(targetUser: userType) {
+    const { username, userId } = targetUser;
+    setCurrentConversationReceiverName(username);
+    setCurrentConversationReceiverId(userId);
+    const conversationId = generateConversationId(user!.uid, userId);
+    setCurrentConversationId(conversationId);
+    if (!checkTargetExistInConnections(userId)) {
+      addNewConnection(user!.uid, userId);
+      addNewConversation(conversationId);
+      setConnections((prev: Array<userType>) => [...prev, targetUser]);
     }
   }
-  function checkTargetNotCurrentUser(currentUserId:string,targetUserId:string):boolean{
-    if(currentUserId === targetUserId){
-        setErrorMsg("Target cannot be yourself")
-        console.error("Target cannot be yourself")
-        return false
+
+  function checkTargetNotCurrentUser(
+    currentUserId: string,
+    targetUserId: string
+  ): boolean {
+    if (currentUserId === targetUserId) {
+      setErrorMsg("Target cannot be yourself");
+      console.error("Target cannot be yourself");
+      return false;
     }
-    return true
+    return true;
   }
-  function checkTargetExistInConnections(targetUserId:string):boolean{
-    const connectionsCopy = [...connections]
-    for(const currentUser of connectionsCopy){
-        if(currentUser.userId === targetUserId){
-            console.log(`user ${currentUser.username} is already in the connections. `)
-            return true
-        }
+
+  function checkTargetExistInConnections(targetUserId: string): boolean {
+    const connectionsCopy = [...connections];
+    for (const currentUser of connectionsCopy) {
+      if (currentUser.userId === targetUserId) {
+        console.log(
+          `user ${currentUser.username} is already in the connections. `
+        );
+        return true;
+      }
     }
-    return false
+    return false;
   }
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    if (phoneNumberRef?.current?.value.length !== 11) {
-        console.log("Invalid phone number")
+    if (
+      !checkPhoneNumberLength(phoneNumberRef1!.current!.value, 5) ||
+      !checkPhoneNumberLength(phoneNumberRef2!.current!.value, 6)
+    ) {
+      setErrorMsg("Invalid phone number");
+      return;
     }
-    const targetPhoneNumber = phoneNumberRef!.current!.value;
-    const targetUser = await findUserIdByPhone(targetPhoneNumber)
-    if(targetUser != null && checkTargetNotCurrentUser(user!.uid, targetUser.userId)){
-        handleStartNewConversation(targetUser.targetUserData as userType)
+    const targetPhoneNumber =
+      phoneNumberRef1!.current!.value + phoneNumberRef2!.current!.value;
+    const { success, targetUserData, userId } = await findUserIdByPhone(
+      targetPhoneNumber
+    );
+    if (success && checkTargetNotCurrentUser(user!.uid, userId as string)) {
+      handleStartNewConversation(targetUserData as userType);
+      handleCloseNewConversationModal();
+      return;
+    } else {
+      setErrorMsg("Cannot find users with entered phone number");
+      return;
     }
   }
+
   return (
     <form
       className={styles["new-conversation-form"]}
       onSubmit={(e) => handleSubmit(e)}
     >
-      <div className={styles["input-wrapper"]}>
-        <label htmlFor="phoneNumber">The phone number of your target: </label>
-        <input
-          name="phoneNumber"
-          id="phoneNumber"
-          type="tel"
-          placeholder="format: 01234-567890"
-          pattern="[0-9]{11}"
-          required
-          ref={phoneNumberRef}
-        />
-      </div>
+      {errorMsg && <p className={styles.error}>{errorMsg}</p>}
+      <PhoneNumberInput
+        phoneNumberRef1={phoneNumberRef1}
+        phoneNumberRef2={phoneNumberRef2}
+        isSignUp={false}
+      />
       <div className={styles["btn-wrapper"]}>
         <button
           className={`${btnStyles.btn} ${btnStyles.submit}`}

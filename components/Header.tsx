@@ -1,6 +1,10 @@
+// css
 import styles from "../src/styles/Header.module.css";
+
+// components
 import Image from "next/image";
 import HamburgerMenu from "./HamburgerMenu";
+
 export default function Header() {
   return (
     <header className={styles.header}>

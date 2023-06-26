@@ -1,17 +1,30 @@
 "use client";
 
-import signUpFunc from "@/firebase/auth/signUpFunc";
+// hooks
 import { useRef, useState } from "react";
 import { useRouter } from "next/router";
+
+// components
 import NavBar from "../../../components/NavBar";
+import PhoneNumberInput from "../../../components/PhoneNumberInput";
+
+// firebase functions
+import signUpFunc from "@/firebase/auth/signUpFunc";
+
+// css
 import styles from "../../styles/AuthForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
+
+// utils
+import { checkPhoneNumberLength } from "../../../lib/chats";
 
 export default function SignInForm() {
   const [errorMsg, setErrorMsg] = useState<string>("");
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const usernameRef = useRef<HTMLInputElement>(null);
+  const phoneNumberRef1 = useRef<HTMLInputElement>(null);
+  const phoneNumberRef2 = useRef<HTMLInputElement>(null);
   const router = useRouter();
   async function handleSignUp(e: React.SyntheticEvent) {
     e.preventDefault();
@@ -23,14 +36,27 @@ export default function SignInForm() {
         setErrorMsg("Invalid email or password. Please try again.");
         return;
       }
-      if(usernameRef.current.value.trim() == null || usernameRef.current.value.trim().length < 2 ){
-        setErrorMsg("The username must be at least two characters long.")
-        return
+      if (
+        usernameRef.current.value.trim() == null ||
+        usernameRef.current.value.trim().length < 2
+      ) {
+        setErrorMsg("The username must be at least two characters long.");
+        return;
       }
+      if (
+        !checkPhoneNumberLength(phoneNumberRef1!.current!.value, 5) ||
+        !checkPhoneNumberLength(phoneNumberRef2!.current!.value, 6)
+      ) {
+        setErrorMsg("Invalid phone number");
+        return;
+      }
+      const targetPhoneNumber =
+        phoneNumberRef1!.current!.value + phoneNumberRef2!.current!.value;
       const { result, error } = await signUpFunc(
         emailRef.current.value,
         passwordRef.current.value,
-        usernameRef.current.value
+        usernameRef.current.value,
+        targetPhoneNumber
       );
       if (error) {
         setErrorMsg("Invalid email or password. Please try again.");
@@ -72,6 +98,11 @@ export default function SignInForm() {
           data-cy="sign-up-username"
           ref={usernameRef}
           placeholder="This will be you username. It needs to be at least 2 characters long."
+        />
+        <PhoneNumberInput
+          phoneNumberRef1={phoneNumberRef1}
+          phoneNumberRef2={phoneNumberRef2}
+          isSignUp={true}
         />
         <input
           type="submit"

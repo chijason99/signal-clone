@@ -13,10 +13,13 @@ export default function Conversation({username, userId ,conversationId}:conversa
   const {setCurrentConversationId, setCurrentConversationReceiverName, setCurrentConversationReceiverId} = useConversationContext()
 
   function handleReturnConversationId(){
+    console.log(`CurrentConversationReceiverName: ${username}`)
+    console.log(`CurrentConversationReceiverId: ${userId}`)
     setCurrentConversationId(conversationId)
     setCurrentConversationReceiverName(username)
     setCurrentConversationReceiverId(userId)
   }
+  
   return (
     <article className={styles["conversation-wrapper"]} onClick={handleReturnConversationId} data-cy={username}>
         <div className={styles["pic-wrapper"]}>

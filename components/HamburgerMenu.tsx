@@ -1,5 +1,8 @@
+//css
 import styles from "../src/styles/HamburgerMenu.module.css";
 import btnStyles from "../src/styles/Button.module.css";
+
+// hooks
 import signOutFunc from "@/firebase/auth/signOutFunc";
 import { useState, useEffect, useRef } from "react";
 import { useSettingsContext } from "@/context/SettingsContext";

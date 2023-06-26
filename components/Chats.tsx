@@ -20,14 +20,21 @@ import { onAuthStateChanged, getAuth } from "firebase/auth";
 import getConnections from "@/firebase/database/getConnections";
 
 //utils
-import { generateConversationId } from "../lib/chats";
+import { Message, generateConversationId } from "../lib/chats";
+import { Socket } from "socket.io-client";
 
-export default function Chats() {
+interface ChatsProps {
+  socket: Socket | null;
+}
+export default function Chats({ socket }: ChatsProps) {
   const [connections, setConnections] = useState<userType[]>([]);
   const [isNewConversationOpen, setIsNewConversationOpen] =
     useState<boolean>(false);
   const { isSettingsOpen } = useSettingsContext();
   const { user } = useAuthContext();
+
+  console.log(socket)
+
   useEffect(() => {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -42,12 +49,41 @@ export default function Chats() {
     };
   }, []);
 
-  function handleCloseNewConversationModal(){
-    setIsNewConversationOpen(false)
+  useEffect(() => {
+    if (socket) {
+      socket.on("incomingMessage", (msg: Message) => {
+        console.log("incoming message!")
+        if (!checkIfIncomingMessageFromConnections(connections, msg.senderId)) {
+          getConnections(user!.uid).then((fetchedConnections) => {
+            console.log(fetchedConnections);
+            setConnections(fetchedConnections);
+          });
+        }
+      });
+    }
+    return () => {
+      if (socket) {
+        socket.off("incomingMessage");
+      }
+    };
+  }, [socket, connections, user]);
+
+  function handleCloseNewConversationModal() {
+    setIsNewConversationOpen(false);
   }
 
-  function handleOpenNewConversationModal(){
-    setIsNewConversationOpen(true)
+  function handleOpenNewConversationModal() {
+    setIsNewConversationOpen(true);
+  }
+
+  function checkIfIncomingMessageFromConnections(
+    connections: Array<userType>,
+    messageSenderId: string
+  ) {
+    const connectionsCopy = [...connections];
+    const result =  connectionsCopy.some((user) => messageSenderId === user.userId);
+    console.log(result)
+    return result 
   }
 
   return (
@@ -73,10 +109,16 @@ export default function Chats() {
       {isSettingsOpen && <SettingsWrapper />}
       {isNewConversationOpen && (
         <LeftSideModal>
-          <NewConversationForm handleCloseNewConversationModal={handleCloseNewConversationModal} connections={connections} />
+          <NewConversationForm
+            handleCloseNewConversationModal={handleCloseNewConversationModal}
+            connections={connections}
+            setConnections={setConnections}
+          />
         </LeftSideModal>
       )}
-      <NewConversationButton handleOpenNewConversationModal={handleOpenNewConversationModal} />
+      <NewConversationButton
+        handleOpenNewConversationModal={handleOpenNewConversationModal}
+      />
     </section>
   );
 }

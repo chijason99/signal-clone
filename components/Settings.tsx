@@ -1,11 +1,18 @@
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import styles from "../src/styles/Settings.module.css";
-import ProfileDetails from "./ProfileDetails";
-import getUserProfile from "@/firebase/database/getUserProfile";
+// hooks
+import { useEffect, useState } from "react";
 import { useAuthContext } from "@/context/AuthContext";
+
+// firebase functions
+import getUserProfile from "@/firebase/database/getUserProfile";
+
+// components
+import Image from "next/image";
+import ProfileDetails from "./ProfileDetails";
 import LeftSideModal from "./LeftSideModal";
 import UpdateForm from "./UpdateForm";
+
+// css
+import styles from "../src/styles/Settings.module.css";
 
 export default function Settings() {
   const { user } = useAuthContext();
@@ -26,26 +33,32 @@ export default function Settings() {
       getUsernameAndUserEmail(user.uid);
     }
   }, [user, refreshKey]);
+
   function handleClickUsername() {
     handleCloseUpdateForm();
     setIsUpdateUsername(true);
   }
+
   function handleClickEmail() {
     handleCloseUpdateForm();
     setIsUpdateEmail(true);
   }
+
   function handleClickPassword() {
     handleCloseUpdateForm();
     setIsUpdatePassword(true);
   }
+
   function handleCloseUpdateForm() {
     setIsUpdateUsername(false);
     setIsUpdateEmail(false);
     setIsUpdatePassword(false);
   }
+
   function handleRerender() {
     setRefreshKey((prevKey) => prevKey + 1);
   }
+  
   return (
     <div className={styles.settings}>
       <div className={styles["profile"]}>

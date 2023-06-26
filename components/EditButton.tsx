@@ -1,4 +1,3 @@
-import React from 'react'
 import styles from '../src/styles/Button.module.css'
 export default function EditButton() {
   return (

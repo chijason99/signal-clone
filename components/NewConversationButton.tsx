@@ -1,4 +1,3 @@
-import React from 'react'
 import btnStyles from '../src/styles/Button.module.css'
 
 interface NewConversationButtonProps{

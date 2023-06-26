@@ -1,9 +1,14 @@
 "use client";
-
+// firebase functions
 import signInFunc from "@/firebase/auth/signInFunc";
+// hooks
 import { useRef, useState } from "react";
 import { useRouter } from "next/router";
+
+// components
 import NavBar from "../../../components/NavBar";
+
+// css
 import styles from "../../styles/AuthForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
 

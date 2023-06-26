@@ -1,12 +1,20 @@
 "use client";
 
+// hooks
 import { useRef, useEffect } from "react";
+import { useAuthContext } from "@/context/AuthContext";
+
+// css
 import styles from "../src/styles/Main.module.css";
+
+// components
 import ChatBubble from "./ChatBubble";
 import SubmitButton from "./SubmitButton";
 import ChatInterfaceHeader from "./ChatInterfaceHeader";
+
+// utils
 import type { Message } from "../lib/chats";
-import { useAuthContext } from "@/context/AuthContext";
+
 interface MainProps {
   messages: Message[];
   handleSendMessage: (msg: Message) => void;
@@ -16,12 +24,14 @@ export default function Main({ messages, handleSendMessage }: MainProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null) 
   const { user } = useAuthContext();
+
   useEffect(() => {
     if(messagesContainerRef.current){
       const messagesContainer = messagesContainerRef.current;
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
   }, [messages]);
+  
   function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
     if (!inputRef.current) return;

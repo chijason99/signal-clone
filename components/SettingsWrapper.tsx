@@ -1,20 +1,27 @@
-import React, { useState } from "react";
+// hooks
+import { useSettingsContext } from "@/context/SettingsContext";
+import {useEffect, useState } from "react";
+
+// css
 import styles from "../src/styles/SettingsWrapper.module.css";
 import btnStyles from "../src/styles/Button.module.css";
+
+// components
 import Settings from "./Settings";
-import { useSettingsContext } from "@/context/SettingsContext";
-import { useEffect } from "react";
 
 export default function SettingsWrapper() {
   const { setIsSettingsOpen } = useSettingsContext();
   const [isMounting, setIsMounting] = useState<boolean>(false);
+
   useEffect(() => {
     setIsMounting(true);
   }, []);
+
   function handleCloseSettings() {
     setIsMounting(false);
     setTimeout(() => setIsSettingsOpen(false), 500);
   }
+  
   return (
     <div
       className={`${styles["settings-container"]} ${

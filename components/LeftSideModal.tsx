@@ -1,4 +1,3 @@
-import React from 'react'
 import styles from '../src/styles/LeftSideModal.module.css'
 
 interface LeftSideModalProps{

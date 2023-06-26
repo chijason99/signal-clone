@@ -1,7 +1,12 @@
-import React from 'react'
-import AuthButton from './AuthButton'
+// css
 import styles from '../src/styles/NavBar.module.css'
+
+// components
+import AuthButton from './AuthButton'
+
+// utils
 import { useRouter } from 'next/router'
+
 export default function NavBar() {
   const router = useRouter();
   return (
